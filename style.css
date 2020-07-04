@@ -1,0 +1,95 @@
+.delta {
+	max-width: 1000px;
+	border: 1px solid #e1e4e8;
+    border-radius: 6px;
+	margin: auto;
+}
+
+.delta-wrapper {
+
+}
+
+.delta-row {
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #24292e;
+	/*height: 38px;*/
+	padding: 16px;
+	padding-top: 8px;
+	padding-bottom: 8px;
+    border-top: 1px solid #e1e4e8;
+}
+
+.delta-row p {
+	margin: 0;
+}
+
+.delta-row:hover {
+	background-color: #f6f8fa;
+}
+
+.delta-icon {
+	margin-right: 16px;
+	display: inline-block;
+	vertical-align: bottom;
+}
+
+.delta-name {
+	display: inline-block;
+}
+
+.delta-name a {
+	margin: 0;
+	color: #24292e;
+	text-decoration: none;
+}
+
+.delta-name a:hover {
+	margin: 0;
+	color: #0366d6;
+	text-decoration: underline;
+}
+
+
+.delta-icon-svg-folder {
+	height: 16;
+    width: 16;
+	color: #79b8ff;
+	fill: currentColor;
+	overflow: hidden;
+}
+
+.delta-icon-svg-file {
+	height: 16;
+    width: 16;
+	color: #6a737d;
+	fill: currentColor;
+	overflow: hidden;
+}
+
+.delta-location {
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #24292e;
+	padding: 15px;
+	padding-left: 19px;
+	font-weight: 700;
+}
+
+.delta-location a {
+    color: #24292e;
+}
+
+.delta-root {
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
+    font-size: 14px;
+    line-height: 1.5;
+	color: #0366d6;
+	cursor: pointer;
+	min-width: 16px;
+	display: inline-block;
+	font-weight: 600;
+	text-align: center;
+}
