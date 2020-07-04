@@ -1,9 +1,14 @@
+var delta_content = document.getElementById("delta");
 //const api_TreeURL = "https://api.github.com/repos/OpenSourceProtogenCollection/opensourceprotogencollection.github.io/git/trees/master?recursive=1";
-const api_TreeURL = "https://protogencollection.titusstudios.net/data/static/json/api/restapi/v3/git_tree-28062020.json"
-const website_Domain = "https://protogencollection.titusstudios.net/"
-var currentPath = "docs"
-var searchbar = document.getElementById("searchbox");
-searchbar.value = "docs"
+const api_TreeURL = delta_content.getAttribute("tree")
+const website_Domain = delta_content.getAttribute("domain")
+let DELTA_location = (a) => console.warn('Function not fetched yet')
+let DELTA_generateRow = (a) => console.warn('Function not fetched yet')
+let DELTA_fetch = (a) => console.warn('Function not fetched yet')
+let DELTA_error = (a) => console.warn('Function not fetched yet')
+var currentPath = delta_content.getAttribute("path")
+var searchbar = document.getElementById("searchbox")
+searchbar.value = delta_content.getAttribute("path")
 
 fetch(api_TreeURL)
 	.then(function(response) {
@@ -20,8 +25,16 @@ fetch(api_TreeURL)
 			}    
 		}    
 
-		function DELTA_location(currrentlLocation) {
-			var parentlocation = document.getElementById("delta");
+		var delta_content = document.getElementById("delta");
+		var deltaID = document.createElement("div")
+		var uniqueID = ('_' + Math.random().toString(36).substr(2,9))
+
+		delta_content.append(deltaID)
+		deltaID.setAttribute("id",uniqueID)
+
+
+		DELTA_location = (id,currrentlLocation) => {
+			var parentlocation = document.getElementById(id);
 			var dirLocation = document.createElement("div")
 			var dirLocationText = document.createElementNS("http://www.w3.org/1999/xhtml","a")
 			var lastChar = currrentlLocation.substr(-1);
@@ -37,8 +50,8 @@ fetch(api_TreeURL)
 			dirLocationText.innerHTML = currrentlLocation
 		}
 		
-		function DELTA_generateRow(type,filename,href,totalPath) {
-			var parentlocation = document.getElementById("delta");
+		DELTA_generateRow = (id,type,filename,href,totalPath) => {
+			var parentlocation = document.getElementById(id);
 			var wrapper = document.createElement("div")
 			var row = document.createElement("div")
 			var icon = document.createElement("div")
@@ -70,7 +83,7 @@ fetch(api_TreeURL)
 			if (type == "folder") {
 				icon.style.width = "16px"
 				icon.style.height = "16px"
-				namea.setAttribute("onclick","selectDir('"+totalPath+"')")
+				namea.setAttribute("onclick","selectDir("+"'"+id+"'"+","+"'"+totalPath+"'"+")")
 				icon_svg.setAttribute("class","delta-icon-svg-folder")
 				icon_type_svg.setAttribute("d","M1.75 1A1.75 1.75 0 000 2.75v10.5C0 14.216.784 15 1.75 15h12.5A1.75 1.75 0 0016 13.25v-8.5A1.75 1.75 0 0014.25 3h-6.5a.25.25 0 01-.2-.1l-.9-1.2c-.33-.44-.85-.7-1.4-.7h-3.5z")
 			} else if (type == "file") {
@@ -84,16 +97,16 @@ fetch(api_TreeURL)
 				rootspan.setAttribute("class","delta-root")
 				rootspan.innerHTML = ".&#8202;."
 				icon_svg.style.display = "none"
-				rootspan.setAttribute("onclick","returnDir()")
+				rootspan.setAttribute("onclick","returnDir("+"'"+id+"'"+")")
 			}
 		
 			namea.innerHTML = filename
 		}
 
-		function DELTA_fetch(search) {
+		DELTA_fetch = (id,search) => {
 			(json.tree).sort(GetSortOrder("path"));  
 			searchbar.value = search
-			DELTA_location(search)
+			DELTA_location(id,search)
 
 			var lastChar = search.substr(-1);
 			var rootReturn
@@ -105,7 +118,7 @@ fetch(api_TreeURL)
 			}
 
 			if(rootReturn !== "docs/") {
-				DELTA_generateRow("return","","#")
+				DELTA_generateRow(id,"return","","#")
 			}
 
 			for (var item in (json.tree)) {  
@@ -119,7 +132,7 @@ fetch(api_TreeURL)
 						var currentPathFolders_RemoveRecursive = (sortedPaths.replace(searchProfile, ''))
 
 						if (currentPathFolders == currentPathFolders_RemoveRecursive) {
-							DELTA_generateRow("folder",currentPathFolders,"#",sortedPaths)
+							DELTA_generateRow(id,"folder",currentPathFolders,"#",sortedPaths)
 						}
 
 					}
@@ -139,7 +152,7 @@ fetch(api_TreeURL)
 								var filename_RemoveRecursive = (sortedPaths.replace(searchProfile, ''))
 
 								if (filename_Recursive == (filename_RemoveRecursive)) {
-									DELTA_generateRow("file",filename,((website_Domain+sortedPaths).replace(/.md$/,"")))
+									DELTA_generateRow(id,"file",filename,((website_Domain+sortedPaths).replace(/.md$/,"")))
 								}
 							}
 					}
@@ -147,30 +160,57 @@ fetch(api_TreeURL)
 			} 
 		}
 
-		DELTA_fetch(currentPath)
+		DELTA_fetch(uniqueID,currentPath)
 		
 		searchbar.addEventListener("keyup", function(event) {
 			if (event.keyCode === 13) {
 				event.preventDefault();
 		
-				const delta_content = document.getElementById("delta");
+				const delta_content = document.getElementById(uniqueID);
 				delta_content.textContent = '';
-		
+				
 				currentPath = searchbar.value
-				DELTA_fetch(currentPath)
+				DELTA_fetch(uniqueID,currentPath)
 			}
 		});
 	}).catch(function(ex) {
-		console.log('parsing failed', ex)
-})     
+		DELTA_error = (id,error) => {
+			const delta_content = document.getElementById("delta");
+			delta_content.textContent = '';
+			var parentlocation = document.getElementById("delta");
+			var wrapper = document.createElement("div")
+			var row = document.createElement("div")
+			var namep = document.createElementNS("http://www.w3.org/1999/xhtml","p")
+			var namep_desc = document.createElementNS("http://www.w3.org/1999/xhtml","p")
+			var namep_err = document.createElementNS("http://www.w3.org/1999/xhtml","p")
+		
+			parentlocation.append(wrapper)
+			wrapper.append(row)
+			row.append(namep)
+			row.append(namep_desc)
+			row.append(namep_err)
 
-function selectDir(totalPath) {
-	DELTA_fetch(totalPath)
-	const delta_content = document.getElementById("delta");
+			wrapper.setAttribute("class","delta-wrapper")
+			row.setAttribute("class","delta-row")
+			row.style.color = "#ff3a30"
+
+			namep.innerHTML = "<strong>Fetching Error:</strong>"
+			namep_desc.innerHTML = "An Error was encountered while Fetching the Github API:"
+			namep_err.innerHTML = error
+		}
+
+		DELTA_error(ex)
+		console.log('parsing failed', ex)
+	}
+)     
+
+function selectDir(id,totalPath) {
+	const delta_content = document.getElementById(id);
 	delta_content.textContent = '';
+	DELTA_fetch(id,totalPath)
 }
 
-function returnDir(totalPath) {
+function returnDir(id,totalPath) {
 	var lastCharRrn = (searchbar.value).substr(-1);
 	var rootReturn
 
@@ -183,10 +223,10 @@ function returnDir(totalPath) {
 	var rootReturn_a = rootReturn.split('/');
 	rootReturn = rootReturn.replace(rootReturn_a[rootReturn_a.length-2] + '/', '');
 
-	const delta_content = document.getElementById("delta");
+	const delta_content = document.getElementById(id);
 	delta_content.textContent = '';
 
 	searchbar.value = rootReturn
 	currentPath = searchbar.value
-	DELTA_fetch(currentPath)
+	DELTA_fetch(id,currentPath)
 }
